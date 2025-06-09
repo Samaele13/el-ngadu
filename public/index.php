@@ -31,6 +31,24 @@ switch ($request_uri) {
     }
     break;
 
+  case '/api/pengaduan/mine':
+    if ($request_method === 'GET') {
+      require __DIR__ . '/../src/api/pengaduan/read-mine.php';
+    } else {
+      http_response_code(405);
+      echo json_encode(['error' => 'Metode tidak diizinkan, gunakan GET']);
+    }
+    break;
+
+  case '/api/masyarakat':
+    if ($request_method === 'GET') {
+      require __DIR__ . '/../src/api/masyarakat/read-all.php';
+    } else {
+      http_response_code(405);
+      echo json_encode(['error' => 'Metode tidak diizinkan, gunakan GET']);
+    }
+    break;
+
   case '/api/masyarakat/register':
     if ($request_method === 'POST') {
       require __DIR__ . '/../src/api/masyarakat/register.php';
@@ -52,6 +70,15 @@ switch ($request_uri) {
   case '/api/petugas/login':
     if ($request_method === 'POST') {
       require __DIR__ . '/../src/api/petugas/login.php';
+    } else {
+      http_response_code(405);
+      echo json_encode(['error' => 'Metode tidak diizinkan, gunakan POST']);
+    }
+    break;
+
+  case '/api/tanggapan':
+    if ($request_method === 'POST') {
+      require __DIR__ . '/../src/api/tanggapan/create.php';
     } else {
       http_response_code(405);
       echo json_encode(['error' => 'Metode tidak diizinkan, gunakan POST']);
