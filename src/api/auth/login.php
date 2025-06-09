@@ -1,6 +1,7 @@
 <?php
 
 require_once __DIR__ . '/../../components/Database.php';
+require_once __DIR__ . '/../../components/Auth.php';
 
 $input = json_decode(file_get_contents('php://input'), true);
 
@@ -12,23 +13,17 @@ if (!isset($input['username']) || !isset($input['password'])) {
 
 $username = $input['username'];
 $password = $input['password'];
-
 $pdo = Database::connect();
 
 try {
   $sql = "SELECT * FROM masyarakat WHERE username = ?";
   $statement = $pdo->prepare($sql);
   $statement->execute([$username]);
-
   $user = $statement->fetch();
 
-  if (!$user) {
-    http_response_code(401);
-    echo json_encode(['error' => 'Kredensial tidak valid.']);
-    exit();
-  }
+  if ($user && password_verify($password, $user['password'])) {
+    Auth::login($user, 'masyarakat');
 
-  if (password_verify($password, $user['password'])) {
     http_response_code(200);
     echo json_encode([
       'message' => 'Login berhasil.',
