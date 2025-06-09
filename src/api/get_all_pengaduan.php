@@ -1,7 +1,7 @@
 <?php
 
 // Panggil file koneksi database
-require_once __DIR__ . '/../../core/connection.php';
+require_once __DIR__ . '/../core/connection.php';
 
 // Beritahu browser bahwa yang akan kita kirim adalah data JSON
 header('Content-Type: application/json');
