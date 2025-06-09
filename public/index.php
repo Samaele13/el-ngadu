@@ -77,11 +77,17 @@ switch ($request_uri) {
     break;
 
   case '/api/petugas':
-    if ($request_method === 'GET') {
-      require __DIR__ . '/../src/api/petugas/read-all.php';
-    } else {
-      http_response_code(405);
-      echo json_encode(['error' => 'Metode tidak diizinkan, gunakan GET']);
+    switch ($request_method) {
+      case 'GET':
+        require __DIR__ . '/../src/api/petugas/read-all.php';
+        break;
+      case 'POST':
+        require __DIR__ . '/../src/api/petugas/create.php';
+        break;
+      default:
+        http_response_code(405);
+        echo json_encode(['error' => 'Metode tidak diizinkan untuk endpoint ini']);
+        break;
     }
     break;
 
