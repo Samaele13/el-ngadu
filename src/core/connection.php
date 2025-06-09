@@ -1,6 +1,5 @@
 <?php
 
-// Path di bawah ini diubah untuk memanggil db.php
 $config = require __DIR__ . '/../config/db.php';
 
 $dsn = "mysql:host={$config['host']};dbname={$config['name']};charset={$config['charset']}";

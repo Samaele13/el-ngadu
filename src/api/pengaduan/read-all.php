@@ -1,17 +1,13 @@
 <?php
 
-// Panggil file koneksi database
-require_once __DIR__ . '/../core/connection.php';
+require_once __DIR__ . '/../../components/Database.php';
 
-// Beritahu browser bahwa yang akan kita kirim adalah data JSON
-header('Content-Type: application/json');
+$pdo = Database::connect();
 
 try {
     $statement = $pdo->query("SELECT * FROM pengaduan ORDER BY created_at DESC");
-
     $pengaduan = $statement->fetchAll();
 
-    // Kembalikan data sebagai JSON
     echo json_encode($pengaduan);
 
 } catch (PDOException $e) {
