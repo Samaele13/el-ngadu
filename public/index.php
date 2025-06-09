@@ -1,20 +1,28 @@
 <?php
+
+// Memanggil file koneksi sekali saja di pintu masuk utama
 require_once __DIR__ . '/../src/core/connection.php';
-?>
 
-<!doctype html>
-<html>
+// Mengatur header default untuk semua respons adalah JSON
+header('Content-Type: application/json');
 
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <link href="/css/output.css" rel="stylesheet">
-</head>
+$request_uri = parse_url($_SERVER['REQUEST_URI'], PHP_URL_PATH);
 
-<body>
-  <h1 class="text-3xl text-red-600 font-bold">
-    Hello World dengan Struktur Baru!
-  </h1>
-</body>
+// Ini adalah router kita
+switch ($request_uri) {
+  // Rute untuk mengambil semua data pengaduan
+  case '/api/pengaduan':
+    require __DIR__ . '/../src/api/get_all_pengaduan.php';
+    break;
 
-</html>
+  // Anda bisa menambahkan rute lain di sini di masa depan
+  // case '/api/users':
+  //     require __DIR__ . '/../src/api/get_all_users.php';
+  //     break;
+
+  // Jika tidak ada rute yang cocok
+  default:
+    http_response_code(404); // Set status code Not Found
+    echo json_encode(['error' => 'Endpoint tidak ditemukan']);
+    break;
+}
