@@ -6,7 +6,7 @@
 .env
 .env.local
 .env.*.local
-src/config/db.php # <-- TAMBAHKAN BARIS INI
+src/config/db.php
 
 # IDE settings
 .vscode/

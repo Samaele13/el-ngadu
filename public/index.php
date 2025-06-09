@@ -14,12 +14,7 @@ if ($request_uri === '/api/pengaduan') {
     // Jika metodenya POST, panggil file untuk membuat data baru
     // require __DIR__ . '/../src/api/pengaduan/create.php';
   }
-}
-// Anda bisa tambahkan blok 'else if' lain untuk rute lain seperti /api/users
-// else if ($request_uri === '/api/users') { ... }
-
-else {
-  // Jika tidak ada rute yang cocok
+} else {
   http_response_code(404);
   echo json_encode(['error' => 'Endpoint tidak ditemukan']);
 }
