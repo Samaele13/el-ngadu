@@ -76,6 +76,15 @@ switch ($request_uri) {
     }
     break;
 
+  case '/api/petugas':
+    if ($request_method === 'GET') {
+      require __DIR__ . '/../src/api/petugas/read-all.php';
+    } else {
+      http_response_code(405);
+      echo json_encode(['error' => 'Metode tidak diizinkan, gunakan GET']);
+    }
+    break;
+
   case '/api/tanggapan':
     if ($request_method === 'POST') {
       require __DIR__ . '/../src/api/tanggapan/create.php';
