@@ -76,6 +76,15 @@ switch ($request_uri) {
     }
     break;
 
+  case '/api/auth/logout':
+    if ($request_method === 'POST') {
+      require __DIR__ . '/../src/api/auth/logout.php';
+    } else {
+      http_response_code(405);
+      echo json_encode(['error' => 'Metode tidak diizinkan, gunakan POST']);
+    }
+    break;
+
   case '/api/petugas/login':
     if ($request_method === 'POST') {
       require __DIR__ . '/../src/api/petugas/login.php';
@@ -112,6 +121,15 @@ switch ($request_uri) {
     } else {
       http_response_code(405);
       echo json_encode(['error' => 'Metode tidak diizinkan, gunakan POST']);
+    }
+    break;
+
+  case '/api/laporan/generate':
+    if ($request_method === 'GET') {
+      require __DIR__ . '/../src/api/laporan/generate.php';
+    } else {
+      http_response_code(405);
+      echo json_encode(['error' => 'Metode tidak diizinkan, gunakan GET']);
     }
     break;
 
