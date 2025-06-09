@@ -67,6 +67,15 @@ switch ($request_uri) {
     }
     break;
 
+  case '/api/auth/profile':
+    if ($request_method === 'GET') {
+      require __DIR__ . '/../src/api/auth/profile.php';
+    } else {
+      http_response_code(405);
+      echo json_encode(['error' => 'Metode tidak diizinkan, gunakan GET']);
+    }
+    break;
+
   case '/api/petugas/login':
     if ($request_method === 'POST') {
       require __DIR__ . '/../src/api/petugas/login.php';
@@ -83,6 +92,12 @@ switch ($request_uri) {
         break;
       case 'POST':
         require __DIR__ . '/../src/api/petugas/create.php';
+        break;
+      case 'PATCH':
+        require __DIR__ . '/../src/api/petugas/update.php';
+        break;
+      case 'DELETE':
+        require __DIR__ . '/../src/api/petugas/delete.php';
         break;
       default:
         http_response_code(405);

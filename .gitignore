@@ -7,7 +7,7 @@
 .env.local
 .env.*.local
 src/config/db.php
-public/testhash.php
+public/test-hash.php
 
 # IDE settings
 .vscode/
