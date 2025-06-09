@@ -49,6 +49,15 @@ switch ($request_uri) {
     }
     break;
 
+  case '/api/petugas/login':
+    if ($request_method === 'POST') {
+      require __DIR__ . '/../src/api/petugas/login.php';
+    } else {
+      http_response_code(405);
+      echo json_encode(['error' => 'Metode tidak diizinkan, gunakan POST']);
+    }
+    break;
+
   default:
     http_response_code(404);
     echo json_encode(['error' => 'Endpoint tidak ditemukan']);
