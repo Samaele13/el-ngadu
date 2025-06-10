@@ -1,5 +1,4 @@
 <?php
-
 class Auth
 {
   public static function startSession()
