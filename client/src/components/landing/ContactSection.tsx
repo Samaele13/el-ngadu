@@ -6,9 +6,9 @@ import { Textarea } from "@/components/ui/textarea";
 import { Mail, MapPin, Phone } from "lucide-react";
 
 const contactInfo = [
-  { icon: <MapPin className="h-6 w-6 text-slate-900" />, title: "Alamat", content: "Jl. Contoh No. 123, Kota Contoh, Indonesia" },
-  { icon: <Phone className="h-6 w-6 text-slate-900" />, title: "Telepon", content: "+62 123 4567 890" },
-  { icon: <Mail className="h-6 w-6 text-slate-900" />, title: "Email", content: "info@elngadu.com" },
+  { icon: <MapPin className="h-6 w-6 text-slate-900" />, title: "Alamat", content: "Jl. Kelapa Dua, No 16, Jakarta Barat, Indonesia" },
+  { icon: <Phone className="h-6 w-6 text-slate-900" />, title: "Telepon", content: "+62 812 9629 9390" },
+  { icon: <Mail className="h-6 w-6 text-slate-900" />, title: "Email", content: "fahmicucian@gmail.com" },
 ];
 
 export function ContactSection() {

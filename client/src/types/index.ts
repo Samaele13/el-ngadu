@@ -14,4 +14,3 @@ export interface Petugas {
 export type User =
   | (Masyarakat & { userType: 'masyarakat' })
   | (Petugas & { userType: 'petugas' });
-
