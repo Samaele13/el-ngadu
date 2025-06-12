@@ -97,7 +97,8 @@ export default function BuatPengaduanPage() {
                     Akses Ditolak
                   </h2>
                   <p className="text-sm text-muted-foreground mt-2">
-                    Anda harus login sebagai masyarakat untuk mengakses halaman ini.
+                    Anda harus login sebagai masyarakat untuk mengakses halaman
+                    ini.
                   </p>
                 </div>
                 <div className="flex gap-2 justify-center">
@@ -108,10 +109,7 @@ export default function BuatPengaduanPage() {
                     <User className="h-4 w-4" />
                     Login
                   </Button>
-                  <Button
-                    variant="outline"
-                    onClick={() => navigate("/")}
-                  >
+                  <Button variant="outline" onClick={() => navigate("/")}>
                     Kembali ke Beranda
                   </Button>
                 </div>
@@ -135,22 +133,14 @@ export default function BuatPengaduanPage() {
                     Buat Pengaduan Baru
                   </CardTitle>
                   <CardDescription className="text-muted-foreground">
-                    Silakan isi detail pengaduan Anda di bawah ini. Jelaskan masalah
-                    dengan rinci.
+                    Silakan isi detail pengaduan Anda di bawah ini. Jelaskan
+                    masalah dengan rinci.
                   </CardDescription>
-                </div>
-                <div className="text-right">
-                  <p className="text-xs text-muted-foreground">
-                    Login sebagai: {user.nama}
-                  </p>
-                  <p className="text-xs text-muted-foreground">
-                    Role: {user.userType}
-                  </p>
                 </div>
               </div>
             </CardHeader>
 
-            <CardContent className="space-y-6 p-6">
+            <CardContent className="-mt-2 space-y-6 p-6">
               <div className="space-y-2">
                 <Label htmlFor="judul" className="text-sm font-medium">
                   Judul Pengaduan
