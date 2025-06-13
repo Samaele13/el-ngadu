@@ -6,6 +6,7 @@
 .env
 .env.local
 .env.*.local
+public/uploads
 src/config/db.php
 public/test-hash.php
 
