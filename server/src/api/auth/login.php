@@ -16,7 +16,8 @@ $password = $input['password'];
 $pdo = Database::connect();
 
 try {
-  $sql = "SELECT * FROM masyarakat WHERE username = ?";
+
+  $sql = "SELECT nik, nama, username, password, telp FROM masyarakat WHERE username = ?";
   $statement = $pdo->prepare($sql);
   $statement->execute([$username]);
   $user = $statement->fetch();
@@ -30,7 +31,8 @@ try {
       'user' => [
         'nik' => $user['nik'],
         'nama' => $user['nama'],
-        'username' => $user['username']
+        'username' => $user['username'],
+        'telp' => $user['telp']
       ]
     ]);
   } else {
