@@ -1,6 +1,6 @@
 import type { Config } from "tailwindcss"
 import animate from "tailwindcss-animate"
-import defaultTheme from "tailwindcss/defaultTheme" // <-- Perbaikan di sini
+import defaultTheme from "tailwindcss/defaultTheme"
 
 const config = {
   darkMode: "class",
@@ -22,7 +22,6 @@ const config = {
     },
     extend: {
       fontFamily: {
-        // Menggunakan 'defaultTheme.fontFamily.sans' untuk mengakses stack yang benar
         sans: ["Poppins", ...defaultTheme.fontFamily.sans],
       },
       colors: {
