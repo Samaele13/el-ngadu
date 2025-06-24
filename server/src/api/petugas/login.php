@@ -16,7 +16,8 @@ $password = $input['password'];
 $pdo = Database::connect();
 
 try {
-  $sql = "SELECT * FROM petugas WHERE username = ?";
+
+  $sql = "SELECT id_petugas, nama_petugas, username, password, telp, level FROM petugas WHERE username = ?";
   $statement = $pdo->prepare($sql);
   $statement->execute([$username]);
   $petugas = $statement->fetch();
@@ -31,7 +32,8 @@ try {
         'id_petugas' => $petugas['id_petugas'],
         'nama_petugas' => $petugas['nama_petugas'],
         'username' => $petugas['username'],
-        'level' => $petugas['level']
+        'level' => $petugas['level'],
+        'telp' => $petugas['telp']
       ]
     ]);
   } else {
