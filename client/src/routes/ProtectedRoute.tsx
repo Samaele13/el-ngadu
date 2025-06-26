@@ -1,12 +1,17 @@
+import { type ReactNode } from "react";
 import { Navigate, Outlet } from "react-router-dom";
 import { useAuth } from "@/hooks/useAuth";
 import type { User } from "@/types";
 
 interface ProtectedRouteProps {
-  allowedRoles?: Array<User["userType"]>;
+  allowedRoles?: string[];
+  children?: ReactNode;
 }
 
-export default function ProtectedRoute({ allowedRoles }: ProtectedRouteProps) {
+export default function ProtectedRoute({
+  allowedRoles,
+  children,
+}: ProtectedRouteProps) {
   const { isAuthenticated, user, isLoading } = useAuth();
 
   if (isLoading) {
@@ -21,23 +26,23 @@ export default function ProtectedRoute({ allowedRoles }: ProtectedRouteProps) {
     return <Navigate to="/login" replace />;
   }
 
-  // Debug: Log user data to console
-  console.log('Current user:', user);
-  console.log('User type:', user.userType);
-  console.log('Allowed roles:', allowedRoles);
+  const checkRole = (user: User): boolean => {
+    if (!allowedRoles || allowedRoles.length === 0) {
+      return true;
+    }
 
-  if (allowedRoles && !allowedRoles.includes(user.userType)) {
-    // Add more specific error handling
-    console.error(`Access denied. User type: ${user.userType}, Required: ${allowedRoles.join(', ')}`);
-    return (
-      <div className="flex h-screen items-center justify-center flex-col">
-        <p className="text-red-500 mb-4">
-          Akses ditolak. Anda login sebagai {user.userType}, tetapi halaman ini memerlukan akses sebagai {allowedRoles.join(' atau ')}.
-        </p>
-        <Navigate to="/" replace />
-      </div>
-    );
+    let userRole: string = user.userType;
+
+    if (user.userType === "petugas" && user.level === "admin") {
+      userRole = "admin";
+    }
+
+    return allowedRoles.includes(userRole);
+  };
+
+  if (!checkRole(user)) {
+    return <Navigate to="/dashboard" replace />;
   }
 
-  return <Outlet />;
+  return children ? <>{children}</> : <Outlet />;
 }
