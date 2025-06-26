@@ -1,8 +1,5 @@
-import { useState, type FormEvent } from "react";
-import { Link, useNavigate } from "react-router-dom";
-import { ZodError } from "zod";
-import { registerService } from "@/services/authService";
-import { RegisterSchema } from "@/lib/validators";
+import { Link } from "react-router-dom";
+import { useRegisterForm } from "@/hooks/useRegisterForm"; // <-- Impor hook baru kita
 import { Button } from "@/components/ui/button";
 import {
   Card,
@@ -23,87 +20,34 @@ import {
   DialogTitle,
   DialogFooter,
 } from "@/components/ui/dialog";
-import { CheckCircle } from "lucide-react";
-
-type FormErrors = {
-  [key: string]: string | undefined;
-};
+import { CheckCircle, Loader2 } from "lucide-react";
 
 export default function RegisterPage() {
-  const [formData, setFormData] = useState({
-    nik: "",
-    nama: "",
-    username: "",
-    password: "",
-    telp: "",
-  });
-  const [errors, setErrors] = useState<FormErrors>({});
-  const [isLoading, setIsLoading] = useState(false);
-  const [showSuccessDialog, setShowSuccessDialog] = useState(false);
-  const navigate = useNavigate();
-
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const { id, value } = e.target;
-    let filteredValue = value;
-
-    switch (id) {
-      case "nik":
-        filteredValue = value.replace(/[^0-9]/g, "").slice(0, 16);
-        break;
-      case "telp":
-        filteredValue = value.replace(/[^0-9]/g, "").slice(0, 13);
-        break;
-      case "nama":
-        filteredValue = value.replace(/[^a-zA-Z\s]/g, "");
-        break;
-    }
-    setFormData({ ...formData, [id]: filteredValue });
-    if (errors[id]) {
-      setErrors({ ...errors, [id]: undefined });
-    }
-  };
-
-  const handleRegister = async (e: FormEvent) => {
-    e.preventDefault();
-    setIsLoading(true);
-    setErrors({});
-
-    try {
-      const validatedData = RegisterSchema.parse(formData);
-      await registerService(validatedData);
-      setShowSuccessDialog(true);
-    } catch (err) {
-      if (err instanceof ZodError) {
-        const newErrors: FormErrors = {};
-        err.errors.forEach((error) => {
-          if (error.path[0]) {
-            newErrors[error.path[0]] = error.message;
-          }
-        });
-        setErrors(newErrors);
-      } else if (err instanceof Error) {
-        setErrors({ form: err.message });
-      } else {
-        setErrors({ form: "Terjadi kesalahan tidak dikenal." });
-      }
-    } finally {
-      setIsLoading(false);
-    }
-  };
+  const {
+    formData,
+    errors,
+    isLoading,
+    showSuccessDialog,
+    handleChange,
+    handleRegister,
+    setShowSuccessDialog,
+    handleDialogRedirect,
+  } = useRegisterForm();
 
   return (
     <>
-      <div className="flex items-center justify-center min-h-screen bg-slate-50 dark:bg-slate-900 p-4">
+      <div className="flex min-h-screen items-center justify-center bg-slate-50 p-4 dark:bg-slate-900">
         <Card className="w-full max-w-md">
-          <CardHeader className="text-center p-6">
+          <CardHeader className="p-6 text-center">
             <CardTitle className="text-2xl">Buat Akun Baru</CardTitle>
             <CardDescription>
               Daftar untuk mulai membuat pengaduan.
             </CardDescription>
           </CardHeader>
           <form onSubmit={handleRegister}>
-            <CardContent className="p-6 grid gap-4">
-              <div className="-mt-10 grid gap-2">
+            <CardContent className="grid gap-4 p-6 pt-0">
+              {/* NIK */}
+              <div className="grid gap-2">
                 <Label htmlFor="nik">NIK</Label>
                 <Input
                   id="nik"
@@ -117,6 +61,7 @@ export default function RegisterPage() {
                   <p className="text-xs text-destructive">{errors.nik}</p>
                 )}
               </div>
+              {/* Nama Lengkap */}
               <div className="grid gap-2">
                 <Label htmlFor="nama">Nama Lengkap</Label>
                 <Input
@@ -131,6 +76,7 @@ export default function RegisterPage() {
                   <p className="text-xs text-destructive">{errors.nama}</p>
                 )}
               </div>
+              {/* Username */}
               <div className="grid gap-2">
                 <Label htmlFor="username">Username</Label>
                 <Input
@@ -145,6 +91,7 @@ export default function RegisterPage() {
                   <p className="text-xs text-destructive">{errors.username}</p>
                 )}
               </div>
+              {/* Password */}
               <div className="grid gap-2">
                 <Label htmlFor="password">Password</Label>
                 <PasswordInput
@@ -159,6 +106,7 @@ export default function RegisterPage() {
                   <p className="text-xs text-destructive">{errors.password}</p>
                 )}
               </div>
+              {/* Nomor Telepon */}
               <div className="grid gap-2">
                 <Label htmlFor="telp">Nomor Telepon</Label>
                 <Input
@@ -174,21 +122,23 @@ export default function RegisterPage() {
                   <p className="text-xs text-destructive">{errors.telp}</p>
                 )}
               </div>
+              {/* General Form Error */}
               {errors.form && (
-                <p className="text-sm font-medium text-destructive text-center">
+                <p className="text-center text-sm font-medium text-destructive">
                   {errors.form}
                 </p>
               )}
             </CardContent>
-            <CardFooter className="p-6 flex flex-col gap-4">
+            <CardFooter className="flex flex-col gap-4 p-6">
               <Button type="submit" className="w-full" disabled={isLoading}>
+                {isLoading && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}
                 {isLoading ? "Memproses..." : "Daftar"}
               </Button>
-              <p className="text-xs text-center text-muted-foreground">
+              <p className="text-center text-xs text-muted-foreground">
                 Sudah punya akun?{" "}
                 <Link
                   to="/login"
-                  className="underline font-medium hover:text-primary"
+                  className="font-medium underline hover:text-primary"
                 >
                   Masuk di sini
                 </Link>
@@ -199,20 +149,26 @@ export default function RegisterPage() {
       </div>
 
       <Dialog open={showSuccessDialog} onOpenChange={setShowSuccessDialog}>
-        <DialogContent className="sm:max-w-md">
+        <DialogContent
+          className="sm:max-w-md"
+          aria-describedby="register-success-description"
+        >
           <DialogHeader>
-            <div className="mx-auto flex h-12 w-12 items-center justify-center rounded-full bg-green-100">
-              <CheckCircle className="h-6 w-6 text-green-600" />
+            <div className="mx-auto flex h-12 w-12 items-center justify-center rounded-full bg-green-100 dark:bg-green-900/20">
+              <CheckCircle className="h-6 w-6 text-green-600 dark:text-green-400" />
             </div>
-            <DialogTitle className="text-center mt-4">
+            <DialogTitle className="mt-4 text-center">
               Registrasi Berhasil!
             </DialogTitle>
-            <DialogDescription className="text-center">
-              Akun Anda telah berhasil dibuat
+            <DialogDescription
+              id="register-success-description"
+              className="text-center"
+            >
+              Akun Anda telah berhasil dibuat. Silakan lanjut untuk masuk.
             </DialogDescription>
           </DialogHeader>
           <DialogFooter className="sm:justify-center">
-            <Button type="button" onClick={() => navigate("/login")}>
+            <Button type="button" onClick={handleDialogRedirect}>
               Lanjut ke Login
             </Button>
           </DialogFooter>
