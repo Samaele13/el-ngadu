@@ -27,7 +27,7 @@ class Auth
 
     if ($user_type === 'masyarakat') {
       $_SESSION['user_id'] = $user['nik'];
-      $_SESSION['nik'] = $user['nik']; // <-- PERUBAHAN ADA DI SINI
+      $_SESSION['nik'] = $user['nik'];
       $_SESSION['username'] = $user['username'];
       $_SESSION['nama'] = $user['nama'];
     } elseif ($user_type === 'petugas') {
