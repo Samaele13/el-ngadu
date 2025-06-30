@@ -1,28 +1,24 @@
+// CLIENT/src/components/landing/Stats.tsx
+
 import { useEffect, useState } from "react";
-import axios from 'axios';
+import api from "@/lib/api"; // Perhatikan impor ini
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { BarChart, CheckCircle, Clock } from "lucide-react";
 
-interface Pengaduan {
-  status: 'diajukan' | 'diproses' | 'selesai';
+interface StatsData {
+  total: number;
+  proses: number;
+  selesai: number;
 }
 
-const API_URL = 'http://el-ngadu.test/api';
-
 export function Stats() {
-  const [stats, setStats] = useState({ total: 0, proses: 0, selesai: 0 });
+  const [stats, setStats] = useState<StatsData>({ total: 0, proses: 0, selesai: 0 });
 
   useEffect(() => {
     const fetchStats = async () => {
       try {
-        const response = await axios.get<Pengaduan[]>(`${API_URL}/pengaduan`);
-        const data = response.data;
-
-        const total = data.length;
-        const proses = data.filter(p => p.status === 'diproses').length;
-        const selesai = data.filter(p => p.status === 'selesai').length;
-
-        setStats({ total, proses, selesai });
+        const response = await api.get<StatsData>('/stats');
+        setStats(response.data);
       } catch (error) {
         console.error("Gagal mengambil data statistik:", error);
       }
@@ -48,7 +44,7 @@ function StatCard({ icon, title, value }: { icon: React.ReactNode, title: string
   return (
     <Card>
       <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-        <CardTitle className="text-sm font-medium text-gray-500">{title}</CardTitle>
+        <CardTitle className="text-sm font-medium text-muted-foreground">{title}</CardTitle>
         {icon}
       </CardHeader>
       <CardContent>
