@@ -1,17 +1,17 @@
 import { Link, NavLink, useNavigate } from "react-router-dom";
+import { useTheme } from "@/hooks/useTheme"; // Impor hook tema yang baru
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Button } from "@/components/ui/button";
 import { Progress } from "@/components/ui/progress";
 import { SheetContent } from "@/components/ui/sheet";
 import { HelpCircle, LogOut, Moon, Sun } from "lucide-react";
-import type { User, NavItem } from "@/types"; // CORRECTED: type-only import
+import type { User, NavItem } from "@/types";
 
+// Perbarui interface props, hapus isDarkMode dan onToggleTheme
 interface MobileSheetProps {
   navItems: NavItem[];
   user: User | null;
   profileProgress: number;
-  isDarkMode: boolean;
-  onToggleTheme: () => void;
   onLogout: () => void;
 }
 
@@ -19,11 +19,14 @@ export default function MobileSheet({
   navItems,
   user,
   profileProgress,
-  isDarkMode,
-  onToggleTheme,
   onLogout,
 }: MobileSheetProps) {
   const navigate = useNavigate();
+  const { theme, setTheme } = useTheme(); // Gunakan hook dari lokasi baru
+
+  const toggleTheme = () => {
+    setTheme(theme === "dark" ? "light" : "dark");
+  };
 
   const getDisplayName = () => {
     if (!user) return "User";
@@ -72,7 +75,7 @@ export default function MobileSheet({
           <NavLink
             key={item.to}
             to={item.to}
-            end
+            end={item.to === "/dashboard"}
             className={({ isActive }) =>
               `flex items-center gap-4 px-2.5 py-2 rounded-lg transition-colors ${
                 isActive
@@ -88,16 +91,16 @@ export default function MobileSheet({
 
         <div className="mt-auto pt-4 space-y-2">
           <Button
-            onClick={onToggleTheme}
+            onClick={toggleTheme}
             variant="ghost"
             className="w-full justify-start gap-4 text-muted-foreground hover:text-foreground"
           >
-            {isDarkMode ? (
+            {theme === "dark" ? (
               <Sun className="h-5 w-5" />
             ) : (
               <Moon className="h-5 w-5" />
             )}
-            {isDarkMode ? "Light Mode" : "Dark Mode"}
+            {theme === "dark" ? "Light Mode" : "Dark Mode"}
           </Button>
           <Button
             onClick={() => navigate("/dashboard/bantuan")}
