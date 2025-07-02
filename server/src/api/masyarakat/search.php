@@ -4,7 +4,6 @@ require_once __DIR__ . '/../../components/Database.php';
 
 Auth::startSession();
 
-// Pastikan hanya admin yang bisa mengakses
 if (!Auth::isLoggedIn() || $_SESSION['level'] !== 'admin') {
   http_response_code(403);
   echo json_encode(['error' => 'Akses ditolak.']);
