@@ -32,13 +32,24 @@ export const AuthProvider: FC<AuthProviderProps> = ({ children }) => {
   useEffect(() => {
     const verifyUserSession = async () => {
       try {
+        const storedUserData = localStorage.getItem('user_data');
+
+        if (!storedUserData) {
+          setUser(null);
+          setIsLoading(false);
+          return;
+        }
+
         const userData = await getProfileService();
         if (userData) {
           setUser(userData);
+        } else {
+          localStorage.removeItem('user_data');
         }
       } catch (error) {
         console.error("Verifikasi sesi gagal:", error);
         setUser(null);
+        localStorage.removeItem('user_data');
       } finally {
         setIsLoading(false);
       }
@@ -53,6 +64,7 @@ export const AuthProvider: FC<AuthProviderProps> = ({ children }) => {
 
   const logout = () => {
     setUser(null);
+    localStorage.removeItem('user_data');
   };
 
   const updateUser = (updatedData: Partial<User>) => {
