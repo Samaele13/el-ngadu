@@ -22,8 +22,8 @@ if ($_SERVER['REQUEST_METHOD'] == 'OPTIONS') {
     exit();
 }
 
-// require_once __DIR__ . '/../src/components/Auth.php';
-// Auth::startSession();
+require_once __DIR__ . '/../src/components/Auth.php';
+Auth::startSession();
 
 header('Content-Type: application/json');
 
