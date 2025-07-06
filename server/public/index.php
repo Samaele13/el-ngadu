@@ -3,16 +3,23 @@
 require_once __DIR__ . '/../src/components/Auth.php';
 Auth::startSession();
 
-header("Access-Control-Allow-Origin: http://el-ngadu.test:5173");
-header("Access-Control-Allow-Credentials: true");
-header("Access-Control-Allow-Methods: GET, POST, PUT, PATCH, DELETE, OPTIONS");
-header("Access-Control-Allow-Headers: Content-Type, Authorization, X-Requested-With");
+$allowed_origins = [
+    'https://el-ngadu.vercel.app',
+    'http://el-ngadu.test:5173'
+];
 
-if ($_SERVER['REQUEST_METHOD'] === 'OPTIONS') {
-    http_response_code(204);
-    exit();
+if (isset($_SERVER['HTTP_ORIGIN']) && in_array($_SERVER['HTTP_ORIGIN'], $allowed_origins)) {
+    header("Access-Control-Allow-Origin: " . $_SERVER['HTTP_ORIGIN']);
 }
 
+header("Access-Control-Allow-Credentials: true");
+header("Access-Control-Allow-Methods: GET, POST, PUT, DELETE, OPTIONS");
+header("Access-Control-Allow-Headers: Content-Type, Authorization, X-Requested-With");
+
+if ($_SERVER['REQUEST_METHOD'] == 'OPTIONS') {
+    http_response_code(200);
+    exit();
+}
 header('Content-Type: application/json');
 
 $request_uri = parse_url($_SERVER['REQUEST_URI'], PHP_URL_PATH);
@@ -22,7 +29,6 @@ switch ($request_uri) {
     case '/api/pengaduan':
         switch ($request_method) {
             case 'GET':
-                // Cek apakah ada parameter 'q' untuk search
                 if (isset($_GET['q'])) {
                     require __DIR__ . '/../src/api/pengaduan/search.php';
                 } elseif (isset($_GET['id'])) {
@@ -146,7 +152,6 @@ switch ($request_uri) {
         }
         break;
 
-    // ADD THIS NEW ROUTE FOR UNIFIED LOGIN
     case '/api/auth/unified-login':
         if ($request_method === 'POST') {
             require __DIR__ . '/../src/api/auth/unified-login.php';
