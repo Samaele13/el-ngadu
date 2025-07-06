@@ -67,7 +67,6 @@ export default function DashboardPage() {
       }
     };
 
-   
     if (
       user.userType === "masyarakat" ||
       (user.userType === "petugas" && user.level === "admin")

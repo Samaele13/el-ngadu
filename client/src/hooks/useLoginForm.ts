@@ -22,7 +22,6 @@ export function useLogin() {
       navigate("/dashboard");
     }, REDIRECT_DELAY);
 
-
     return () => clearTimeout(timer);
   }, [showSuccessDialog, navigate]);
 

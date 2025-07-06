@@ -17,7 +17,6 @@ import {
   User as UserIcon,
 } from "lucide-react";
 
-// Definisikan item navigasi di sini, dekat dengan logikanya
 const navItemsMasyarakat: NavItem[] = [
   { to: "/dashboard", label: "Dashboard", icon: Home },
   { to: "/dashboard/buat-pengaduan", label: "Buat Pengaduan", icon: FileText },
@@ -61,7 +60,6 @@ export function useDashboard() {
 
   const profileProgress = useMemo(() => calculateProfileProgress(user), [user]);
 
-  // Logika untuk menentukan item navigasi
   useEffect(() => {
     if (user?.userType === "petugas") {
       setNavItems(user.level === "admin" ? navItemsAdmin : navItemsPetugas);
@@ -70,7 +68,6 @@ export function useDashboard() {
     }
   }, [user]);
 
-  // Logika untuk mengambil notifikasi
   const fetchNotifications = useCallback(async () => {
     if (!user) return;
     try {
@@ -88,7 +85,6 @@ export function useDashboard() {
     }
   }, [user, logout, navigate]);
 
-  // Efek untuk polling notifikasi
   useEffect(() => {
     fetchNotifications();
     const intervalId = setInterval(fetchNotifications, 30000); // 30 detik
@@ -119,7 +115,6 @@ export function useDashboard() {
       toast.error(
         error instanceof Error ? error.message : "Gagal menandai notifikasi."
       );
-      // Rollback jika gagal
       setNotifications(originalNotifications);
       setUnreadCount(originalNotifications.filter((n) => !n.is_read).length);
     }
