@@ -1,0 +1,4 @@
+# nixpacks.toml
+
+[providers]
+php = "8.1"
