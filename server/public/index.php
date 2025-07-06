@@ -74,7 +74,6 @@ switch ($request_uri) {
         }
         break;
 
-
     case '/api/stats':
         if ($request_method === 'GET') {
             require __DIR__ . '/../src/api/stats/read.php';
@@ -119,7 +118,6 @@ switch ($request_uri) {
             case 'DELETE':
                 require __DIR__ . '/../src/api/masyarakat/delete.php';
                 break;
-            // --- TAMBAHKAN CASE BARU UNTUK PATCH ---
             case 'PATCH':
                 require __DIR__ . '/../src/api/masyarakat/update.php';
                 break;
@@ -142,6 +140,16 @@ switch ($request_uri) {
     case '/api/auth/login':
         if ($request_method === 'POST') {
             require __DIR__ . '/../src/api/auth/login.php';
+        } else {
+            http_response_code(405);
+            echo json_encode(['error' => 'Metode tidak diizinkan, gunakan POST']);
+        }
+        break;
+
+    // ADD THIS NEW ROUTE FOR UNIFIED LOGIN
+    case '/api/auth/unified-login':
+        if ($request_method === 'POST') {
+            require __DIR__ . '/../src/api/auth/unified-login.php';
         } else {
             http_response_code(405);
             echo json_encode(['error' => 'Metode tidak diizinkan, gunakan POST']);

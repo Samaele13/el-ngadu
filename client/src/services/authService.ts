@@ -26,35 +26,34 @@ export const loginService = async (
   password: string
 ): Promise<User> => {
   try {
-    const masyarakatResponse = await api.post("/auth/login", {
+    const response = await api.post("/auth/unified-login", {
       username,
       password,
     });
-    if (masyarakatResponse.data.user) {
+
+    const userData = response.data.user;
+
+    if (userData.nik) {
       return {
-        ...masyarakatResponse.data.user,
+        ...userData,
         userType: "masyarakat" as const,
       };
+    } else if (userData.id_petugas) {
+      return {
+        ...userData,
+        userType: "petugas" as const,
+      };
     }
-  } catch (masyarakatError) {
-    try {
-      const petugasResponse = await api.post("/petugas/login", {
-        username,
-        password,
-      });
-      if (petugasResponse.data.petugas) {
-        return {
-          ...petugasResponse.data.petugas,
-          userType: "petugas" as const,
-        };
-      }
-    } catch (petugasError) {
-      console.error("Petugas login error:", petugasError);
-    }
-    console.error("Masyarakat login error:", masyarakatError);
-  }
 
-  throw new Error("Username atau password salah.");
+    throw new Error("Invalid user data received.");
+  } catch (error) {
+    if (axios.isAxiosError(error) && error.response) {
+      throw new Error(
+        error.response.data.error || "Username atau password salah."
+      );
+    }
+    throw new Error("Terjadi kesalahan tidak dikenal saat login.");
+  }
 };
 
 export const getProfileService = async (): Promise<User | null> => {
