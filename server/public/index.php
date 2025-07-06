@@ -30,6 +30,8 @@ header('Content-Type: application/json');
 $request_uri = parse_url($_SERVER['REQUEST_URI'], PHP_URL_PATH);
 $request_method = $_SERVER['REQUEST_METHOD'];
 
+die(json_encode(['request_uri' => $request_uri, 'server_var' => $_SERVER['REQUEST_URI']]));
+
 switch ($request_uri) {
     case '/api/pengaduan':
         switch ($request_method) {
