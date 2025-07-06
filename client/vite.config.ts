@@ -9,6 +9,7 @@ export default defineConfig({
     alias: {
       "@": path.resolve(__dirname, "./src"),
     },
+    extensions: [".js", ".mjs", ".ts", ".jsx", ".tsx", ".json"],
   },
   server: {
     host: "el-ngadu.test",
