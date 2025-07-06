@@ -1,10 +1,8 @@
 <?php
+
 ini_set('display_errors', 1);
 ini_set('display_startup_errors', 1);
 error_reporting(E_ALL);
-
-require_once __DIR__ . '/../src/components/Auth.php';
-Auth::startSession();
 
 $allowed_origins = [
     'https://el-ngadu.vercel.app',
@@ -23,6 +21,10 @@ if ($_SERVER['REQUEST_METHOD'] == 'OPTIONS') {
     http_response_code(200);
     exit();
 }
+
+require_once __DIR__ . '/../src/components/Auth.php';
+Auth::startSession();
+
 header('Content-Type: application/json');
 
 $request_uri = parse_url($_SERVER['REQUEST_URI'], PHP_URL_PATH);
