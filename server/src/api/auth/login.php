@@ -37,7 +37,7 @@ try {
     ]);
   } else {
     http_response_code(401);
-    echo json_encode(['error' => 'Kredensial tidak valid.']);
+    echo json_encode(['error' => 'akun tidak ditemukan.']);
   }
 } catch (PDOException $e) {
   http_response_code(500);
