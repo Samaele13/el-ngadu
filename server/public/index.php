@@ -22,7 +22,6 @@ switch ($request_uri) {
     case '/api/pengaduan':
         switch ($request_method) {
             case 'GET':
-                // Cek apakah ada parameter 'q' untuk search
                 if (isset($_GET['q'])) {
                     require __DIR__ . '/../src/api/pengaduan/search.php';
                 } elseif (isset($_GET['id'])) {
